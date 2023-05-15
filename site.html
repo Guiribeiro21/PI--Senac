@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebApp de controle de ansiedade</title>
+    <style>
+      body {
+  font-family: "Arial", sans-serif;
+  margin: 20px;
+  background-color: #f3f3f3;
+}
+
+h1 {
+  color: #333;
+  text-align: center;
+}
+
+p {
+  color: #666;
+}
+
+input[type="text"],
+input[type="number"],
+button {
+  margin: 10px 0;
+  padding: 10px;
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+#output {
+  margin-top: 20px;
+}
+
+.decorative-bg {
+  background-image: url("decorative-background.jpg");
+  background-size: cover;
+  padding: 20px;
+  color: #fff;
+  text-align: center;
+}
+
+.decorative-bg h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.decorative-bg p {
+  font-size: 18px;
+}
+
+.opcoes-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.opcoes-container .opcao {
+  margin: 10px;
+}
+
+.opcoes-container .opcao button {
+  padding: 10px 20px;
+}
+
+.voltar-button {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.voltar-button button {
+  padding: 10px 20px;
+  background-color: #333;
+}
+    </style>
+</head>
+<body>
+<h1>Bem-vindo ao WebApp de controle de ansiedade</h1>
+    <p>Este é um aplicativo simples para ajudá-lo a controlar a ansiedade. Digite o seu nome abaixo para começar:</p>
+    <input type="text" id="nomeInput" placeholder="Digite o seu nome">
+    <button onclick="iniciar()">Começar / Reiniciar</button>
+    <div id="output"></div>
+
+    <script>
+        var outputDiv = document.getElementById("output");
+        var nomeInput = document.getElementById("nomeInput");
+        var opcoesPilha = [];
+
+        function exibirMensagem(mensagem) {
+            outputDiv.innerHTML += "<p>" + mensagem + "</p>";
+        }
+
+        function exibirOpcoes() {
+            exibirMensagem("----------------------------------------------");
+            exibirMensagem("Selecione uma opção:");
+            exibirMensagem("1. Registrar uma atividade");
+            exibirMensagem("2. Registrar sintomas de ansiedade");
+            exibirMensagem("3. Exibir dicas de cuidados com a saúde mental");
+            exibirMensagem("0. Sair do aplicativo");
+        }
+
+        function iniciar() {
+            exibirMensagem("Bem-vindo ao WebApp de controle de ansiedade!");
+            exibirMensagem("----------------------------------------------");
+            var nome = nomeInput.value.trim();
+
+            if (nome === "") {
+                alert("Por favor, digite um nome válido.");
+                return;
+            }
+
+            exibirMensagem("Olá, " + nome + "! Como posso ajudá-lo(a) hoje?");
+            exibirOpcoes();
+            exibirInputOpcao();
+        }
+
+        function exibirInputOpcao() {
+            var opcaoInput = document.createElement("input");
+            opcaoInput.type = "number";
+            opcaoInput.placeholder = "Opção";
+            outputDiv.appendChild(opcaoInput);
+
+            var opcaoButton = document.createElement("button");
+            opcaoButton.textContent = "Selecionar";
+            opcaoButton.onclick = function () {
+                var opcao = parseInt(opcaoInput.value.trim());
+                if (isNaN(opcao) || opcao < 0 || opcao > 3) {
+                    alert("Por favor, digite uma opção válida.");
+                    return;
+                }
+                opcoesPilha.push(opcao);
+                outputDiv.innerHTML = "";
+                switch (opcao) {
+                    case 1:
+                        registrarAtividade();
+                        break;
+                    case 2:
+                        registrarSintomas();
+                        break;
+                    case 3:
+                        exibirDicas();
+                        break;
+                    case 0:
+                        exibirMensagem("Obrigado por usar o WebApp de controle de ansiedade. Até logo!");
+                        break;
+                }
+            };
+
+            outputDiv.appendChild(opcaoButton);
+        }
+
+              function registrarAtividade() {
+            exibirMensagem("Digite uma atividade que você realizou para relaxar:");
+
+            var atividadeInput = document.createElement("input");
+            atividadeInput.type = "text";
+            outputDiv.appendChild(atividadeInput);
+
+            var registrarButton = document.createElement("button");
+            registrarButton.textContent = "Registrar";
+            registrarButton.onclick = function () {
+                var atividade = atividadeInput.value.trim();
+                if (atividade === "") {
+                    alert("Por favor, digite uma atividade válida.");
+                    return;
+                }
+                exibirMensagem("Atividade registrada com sucesso: " + atividade);
+                outputDiv.removeChild(atividadeInput);
+                outputDiv.removeChild(registrarButton);
+                exibirOpcoes();
+                exibirInputOpcao();
+                exibirVoltar();
+            };
+
+            outputDiv.appendChild(registrarButton);
+        }
+
+        function registrarSintomas() {
+            exibirMensagem("Descreva os sintomas de ansiedade que você está enfrentando:");
+
+            var sintomasInput = document.createElement("input");
+            sintomasInput.type = "text";
+            outputDiv.appendChild(sintomasInput);
+
+            var registrarButton = document.createElement("button");
+            registrarButton.textContent = "Registrar";
+            registrarButton.onclick = function () {
+                var sintomas = sintomasInput.value.trim();
+                if (sintomas === "") {
+                    alert("Por favor, digite os sintomas válidos.");
+                    return;
+                }
+                exibirMensagem("Sintomas registrados com sucesso: " + sintomas);
+                outputDiv.removeChild(sintomasInput);
+                outputDiv.removeChild(registrarButton);
+                exibirOpcoes();
+                exibirInputOpcao();
+                exibirVoltar();
+            };
+
+            outputDiv.appendChild(registrarButton);
+        }
+
+        function exibirDicas() {
+            exibirMensagem("----------------------------------------------");
+            exibirMensagem("Dicas de cuidados com a saúde mental:");
+            exibirMensagem("- Pratique exercícios físicos regularmente");
+            exibirMensagem("- Faça pausas para respirar profundamente");
+            exibirMensagem("- Estabeleça uma rotina de sono adequada");
+            exibirMensagem("- Evite o consumo excessivo de cafeína e álcool");
+            exibirMensagem("- Procure apoio de amigos e familiares");
+            exibirOpcoes();
+            exibirInputOpcao();
+            exibirVoltar();
+        }
+
+        function voltar() {
+            if (opcoesPilha.length < 2) {
+                alert("Não há opções anteriores para voltar.");
+                return;
+            }
+            outputDiv.innerHTML = "";
+            opcoesPilha.pop(); // remove a opção atual
+            var opcao = opcoesPilha.pop(); // obtem a opção anterior
+            switch (opcao) {
+                case 1:
+                    registrarAtividade();
+                    break;
+                case 2:
+                    registrarSintomas();
+                    break;
+                case 3:
+                    exibirDicas();
+                    break;
+            }
+            exibirVoltar();
+        }
+
+        function exibirVoltar() {
+            var voltarDiv = document.createElement("div");
+            voltarDiv.innerHTML = '<button onclick="voltar()">Voltar</button>';
+            outputDiv.appendChild(voltarDiv);
+        }
+    </script>
+</body>
+</html>
